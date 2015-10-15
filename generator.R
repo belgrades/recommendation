@@ -71,21 +71,10 @@ trans = data.frame(Sys.time()+rnorm(n = 10, mean = 54000, 18000),
                    as(transacciones, "data.frame"))
 
 trans$transactionID = NULL
+trans$items = as.character(trans$items)
 
 names(trans) = c("timestamp", "items")
 
 for(i in 1:1000){
   trans$items[i] = scrap_trans(trans$items[i])
 }
-
-trans$timestamp = 
-
-names(x) = c("timestamp")
-
-x = inspect(transacciones)
-
-image(transacciones)
-
-transacciones[1:2]
-
-x = Sys.time()+10
