@@ -19,12 +19,21 @@ shinyUI(fluidPage(
                   "Number of bins:",
                   min = 1,
                   max = 50,
-                  value = 30)
+                  value = 30)       
+      
     ),
-
     # Show a plot of the generated distribution
     mainPanel(
-      plotOutput("distPlot")
+      plotOutput("distPlot"), 
+      sidebarPanel(dateRangeInput("daterange", "Date range:",
+                                  start = Sys.Date()-10,
+                                  end = Sys.Date(),
+                                  min = Sys.Date()-20,
+                                  max = Sys.Date(),
+                                  startview = "month",
+                                  language = "es",
+                                  separator = " a ",
+                                  format = "D M yyyy"))
     )
   )
 ))
