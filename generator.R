@@ -13,13 +13,12 @@ scrap_trans = function(entry){
              "variedades/articulo1", "variedades/articulo2","variedades/articulo3",
              "internacional/articulo1", "internacional/articulo2", "internacional/articulo3")
   
-  mapvalues(as.array(strsplit(substr(entry, 2, nchar(entry)-1),",")[[1]]), 
+  paste(mapvalues(as.array(strsplit(substr(entry, 2, nchar(entry)-1),",")[[1]]), 
                    from = map_from,
-                   to = map_to)
+                   to = map_to,
+                   warn_missing = FALSE),
+        collapse = ",")
 }
-
-x = as.data.frame(Sys.time()+rnorm(n = 10, mean = 54000, 18000))
-names(x) = c("timestamp")
 
 # Sports with politics 
 tipo_1 = random.transactions(nItems = 12, 
@@ -68,9 +67,20 @@ tipo_5 = random.transactions(nItems = 12,
 
 transacciones = c(tipo_1, tipo_2, tipo_3, tipo_4, tipo_5)
 
+trans = data.frame(Sys.time()+rnorm(n = 10, mean = 54000, 18000), 
+                   as(transacciones, "data.frame"))
 
+trans$transactionID = NULL
 
-trans = as(transacciones, "data.frame")
+names(trans) = c("timestamp", "items")
+
+for(i in 1:1000){
+  trans$items[i] = scrap_trans(trans$items[i])
+}
+
+trans$timestamp = 
+
+names(x) = c("timestamp")
 
 x = inspect(transacciones)
 
