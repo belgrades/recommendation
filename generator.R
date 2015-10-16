@@ -78,3 +78,33 @@ names(trans) = c("timestamp", "items")
 for(i in 1:1000){
   trans$items[i] = scrap_trans(trans$items[i])
 }
+
+write.csv(x = trans, file = "prueba.csv", row.names = F)
+pru = read.csv(file = "prueba.csv")
+
+lappend <- function ( lst, ...){
+  lst <- c(lst, list(...))
+  return(lst)
+}
+
+eappend <- function(elem, ...){
+  elem <- c(elem, ...)
+  return(elem)
+}
+
+
+transactions = list()
+for(i in 1:1000){
+  single = character()
+  for(page in strsplit(x = trans$items[i], split = ",")[[1]]){
+    single = eappend(single, page)
+  }
+  transactions = lappend(transactions, single)
+}
+
+k = apriori(transactions, 
+            parameter = list(supp = 0.005, 
+                             conf = 0.8,
+                             target = "rules"))
+
+inspect(k)
