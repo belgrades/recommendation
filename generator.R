@@ -67,7 +67,7 @@ tipo_5 = random.transactions(nItems = 12,
 
 transacciones = c(tipo_1, tipo_2, tipo_3, tipo_4, tipo_5)
 
-trans = data.frame(Sys.time()+rnorm(n = 10, mean = 54000, 18000), 
+trans = data.frame(Sys.time()+rnorm(n = 1000, mean = 54000, 18000), 
                    as(transacciones, "data.frame"))
 
 trans$transactionID = NULL
