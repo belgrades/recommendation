@@ -75,10 +75,6 @@ shinyUI(fluidPage(
                                   '"'),
                      hr(),
                      dateRangeInput("dates", label = h3("Date range"))
-           )),
-    column(6,
-           wellPanel(
-             tableOutput('contents')
            ))
   ),
   
@@ -104,77 +100,15 @@ shinyUI(fluidPage(
                href = "https://gallery.shinyapps.io/073-widget-file/")
            ))
   ),
-  
   fluidRow(
     
-    column(4,
+    column(6,
            wellPanel(
-             numericInput("num", label = h3("Numeric input"), value = 1),
-             hr(),
-             p("Current Value:", style = "color:#888888;"), 
-             verbatimTextOutput("num"),
-             a("See Code", class = "btn btn-primary btn-md",  
-               href = "https://gallery.shinyapps.io/074-widget-numeric/")
+             plotOutput('contents')
            )),
-    
-    column(4,
+    column(6,
            wellPanel(
-             radioButtons("radio", label = h3("Radio buttons"),
-                          choices = list("Choice 1" = 1, "Choice 2" = 2, "Choice 3" = 3), 
-                          selected = 1),
-             hr(),
-             p("Current Values:", style = "color:#888888;"), 
-             verbatimTextOutput("radio"),
-             a("See Code", class = "btn btn-primary btn-md",  
-               href = "https://gallery.shinyapps.io/075-widget-radio/")
-           )),
-    
-    column(4,
-           wellPanel(
-             selectInput("select", label = h3("Select box"), 
-                         choices = list("Choice 1" = 1, "Choice 2" = 2,
-                                        "Choice 3" = 3), selected = 1),
-             hr(),
-             p("Current Value:", style = "color:#888888;"), 
-             verbatimTextOutput("select"),
-             a("See Code", class = "btn btn-primary btn-md",  
-               href = "https://gallery.shinyapps.io/076-widget-select/")
-           ))
-  ),
-  
-  fluidRow(
-    
-    column(4,
-           wellPanel(
-             sliderInput("slider1", label = h3("Slider"), min = 0, max = 100, 
-                         value = 50),
-             hr(),
-             p("Current Value:", style = "color:#888888;"), 
-             verbatimTextOutput("slider1"),
-             a("See Code", class = "btn btn-primary btn-md",  
-               href = "https://gallery.shinyapps.io/077-widget-slider/")
-           )),
-    
-    column(4,
-           wellPanel(
-             sliderInput("slider2", label = h3("Slider range"), min = 0, 
-                         max = 100, value = c(25, 75)),
-             hr(),
-             p("Current Values:", style = "color:#888888;"), 
-             verbatimTextOutput("slider2"),
-             a("See Code", class = "btn btn-primary btn-md",  
-               href = "https://gallery.shinyapps.io/077-widget-slider/")
-           )),
-    
-    column(4,
-           wellPanel(
-             textInput("text", label = h3("Text input"), 
-                       value = "Enter text..."),
-             hr(),
-             p("Current Value:", style = "color:#888888;"), 
-             verbatimTextOutput("text"),
-             a("See Code", class = "btn btn-primary btn-md",  
-               href = "https://gallery.shinyapps.io/080-widget-text/")
+             plotOutput("plot")
            )) 
   )
   

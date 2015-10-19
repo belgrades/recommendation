@@ -7,6 +7,9 @@
 
 library(shiny)
 library(arules)
+library(arulesViz)
+
+done = NULL
 
 lappend <- function ( lst, ...){
   lst <- c(lst, list(...))
@@ -16,6 +19,18 @@ lappend <- function ( lst, ...){
 eappend <- function(elem, ...){
   elem <- c(elem, ...)
   return(elem)
+}
+
+create_transactions = function(trans){
+  transactions = list()
+  for(i in 1:nrow(trans)){
+    single = character()
+    for(page in strsplit(x = trans$items[i], split = ",")[[1]]){
+      single = eappend(single, page)
+    }
+    transactions = lappend(transactions, single)
+  }
+  return(transactions)
 }
 
 shinyServer(function(input, output) {
@@ -31,15 +46,8 @@ shinyServer(function(input, output) {
   output$select <- renderPrint({ input$select })
   output$slider1 <- renderPrint({ input$slider1 })
   output$slider2 <- renderPrint({ input$slider2 })
-  #output$submit <- renderPrint({ input$submit })
-  output$text <- renderPrint({ input$text })
-  output$contents <- renderTable({
-    
-    # input$file1 will be NULL initially. After the user selects
-    # and uploads a file, it will be a data frame with 'name',
-    # 'size', 'type', and 'datapath' columns. The 'datapath'
-    # column will contain the local filenames where the data can
-    # be found.
+  
+  trans <- function(){
     
     inFile <- input$file1
     
@@ -47,23 +55,20 @@ shinyServer(function(input, output) {
       return(NULL)
     
     data = read.csv(inFile$datapath, header=input$header, sep=input$sep, 
-             quote=input$quote)
+                    quote=input$quote)
     
-    transactions <<- list()
-    for(i in 1:1000){
-      single = character()
-      for(page in strsplit(x = data$items[i], split = ",")[[1]]){
-        single = eappend(single, page)
-      }
-      transactions <<- lappend(transactions, single)
-    }
+    data$items = as.character(data$items)
     
-    k <<- apriori(transactions, 
-                parameter = list(supp = 0.005, 
-                                 conf = 0.8,
-                                 target = "rules"))
-    
-    head(data, n = 16)
+    transactions = create_transactions(data)
+  }
+  
+  output$plot <- renderPlot({
+        rules = apriori(trans(), parameter = list(supp = 0.0025,conf = 0.7,target = "rules"))
+        plot(rules, method="graph")
+  })
+  output$contents <-  renderPlot({
+        rules = apriori(trans(), parameter = list(supp = 0.0025,conf = 0.7,target = "rules"))
+        plot(rules, method="grouped")
   })
 
 
