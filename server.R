@@ -3,51 +3,19 @@
 # You can find out more about building applications with Shiny here:
 #
 # http://shiny.rstudio.com
-#
-
 library(shiny)
 library(arules)
 library(arulesViz)
-
-done = NULL
-
-lappend <- function ( lst, ...){
-  lst <- c(lst, list(...))
-  return(lst)
-}
-
-eappend <- function(elem, ...){
-  elem <- c(elem, ...)
-  return(elem)
-}
-
-create_transactions = function(trans){
-  transactions = list()
-  for(i in 1:nrow(trans)){
-    single = character()
-    for(page in strsplit(x = trans$items[i], split = ",")[[1]]){
-      single = eappend(single, page)
-    }
-    transactions = lappend(transactions, single)
-  }
-  return(transactions)
-}
+source("utils.R")
 
 shinyServer(function(input, output) {
   
-  output$action <- renderPrint({ input$action })
-  output$checkbox <- renderPrint({ input$checkbox })
   output$checkGroup <- renderPrint({ input$checkGroup })
   output$date <- renderPrint({ input$date })
-  output$dates <- renderPrint({ input$dates })
+  # output$dates <- renderPrint({ input$dates })
   output$file <- renderPrint({ input$file })
-  output$num <- renderPrint({ input$num })
-  output$radio <- renderPrint({ input$radio })
-  output$select <- renderPrint({ input$select })
-  output$slider1 <- renderPrint({ input$slider1 })
-  output$slider2 <- renderPrint({ input$slider2 })
   
-  trans <- function(){
+  trans <- reactive({
     
     inFile <- input$file1
     
@@ -58,17 +26,29 @@ shinyServer(function(input, output) {
                     quote=input$quote)
     
     data$items = as.character(data$items)
-    
+    print("hola")
     transactions = create_transactions(data)
-  }
+    
+  })
+  
+  output$classic <- renderPlot({
+    if(is.null(trans()))
+      return(NULL)
+    rules = apriori(trans(), parameter = list(supp = 0.0025,conf = 0.7,target = "rules"))
+    plot(rules)
+  })
   
   output$plot <- renderPlot({
+        if(is.null(trans()))
+          return(NULL)
         rules = apriori(trans(), parameter = list(supp = 0.0025,conf = 0.7,target = "rules"))
-        plot(rules, method="graph")
+        plot(head(sort(rules, by = "support"),20) , method="graph")
   })
   output$contents <-  renderPlot({
+        if(is.null(trans()))
+          return(NULL)
         rules = apriori(trans(), parameter = list(supp = 0.0025,conf = 0.7,target = "rules"))
-        plot(rules, method="grouped")
+        plot(head(sort(rules, by = "support"),100), method="grouped")
   })
 
 

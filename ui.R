@@ -23,16 +23,6 @@ shinyUI(fluidPage(
   br(),
   
   fluidRow(
-    column(8,
-           p("Upload transactions and choose dates to predict behaviour", 
-             style = "font-family: 'Source Sans Pro';")
-    )
-    ),
-  
-  
-  br(),
-  
-  fluidRow(
     column(3,
            wellPanel(
              checkboxGroupInput("checkGroup", 
@@ -49,12 +39,7 @@ shinyUI(fluidPage(
                                                "internacional/articulo1" = "internacional/articulo1",
                                                "internacional/articulo2" = "internacional/articulo2",
                                                "internacional/articulo3" = "internacional/articulo3"),
-                                selected = 1),
-             hr(),
-             p("Current Values:", style = "color:#888888;"), 
-             verbatimTextOutput("checkGroup"),
-             a("See Code", class = "btn btn-primary btn-md", 
-               href = "https://gallery.shinyapps.io/069-widget-check-group/")
+                                selected = 1)
            )),
     column(3,
            wellPanel(fileInput('file1', 'Choose CSV File',
@@ -72,32 +57,11 @@ shinyUI(fluidPage(
                                   c(None='',
                                     'Double Quote'='"',
                                     'Single Quote'="'"),
-                                  '"'),
-                     hr(),
-                     dateRangeInput("dates", label = h3("Date range"))
-           ))
-  ),
-  
-  fluidRow(
-    
-    column(4,
-           wellPanel(
-             dateRangeInput("dates", label = h3("Date range")),
-             hr(),
-             p("Current Values:", style = "color:#888888;"), 
-             verbatimTextOutput("dates"),
-             a("See Code", class = "btn btn-primary btn-md",  
-               href = "https://gallery.shinyapps.io/072-widget-date-range/")
+                                  '"')
            )),
-    
-    column(4,
-           wellPanel(
-             fileInput("file", label = h3("File input")),
-             hr(),
-             p("Current Value:", style = "color:#888888;"), 
-             verbatimTextOutput("file"),
-             a("See Code", class = "btn btn-primary btn-md",  
-               href = "https://gallery.shinyapps.io/073-widget-file/")
+          column(6,
+             wellPanel(
+             plotOutput('classic')
            ))
   ),
   fluidRow(

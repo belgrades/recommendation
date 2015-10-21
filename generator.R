@@ -188,7 +188,7 @@ k = apriori(transactions,
 subrules = head(sort(k, by="support"), 10)
 plot(subrules, method="grouped")
 
-plot(subrules,method="grouped",interactive=TRUE)
+plot(subrules,method="graph",interactive=TRUE)
 
 plot(subrules, method="grouped")
 
