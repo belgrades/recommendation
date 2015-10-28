@@ -65,15 +65,18 @@ shinyUI(fluidPage(
            ))
   ),
   fluidRow(
-    
-    column(6,
-           wellPanel(
-             plotOutput('contents')
-           )),
-    column(6,
-           wellPanel(
-             plotOutput("plot")
-           )) 
+    column(12,
+      wellPanel(
+        plotOutput("plot", , width="100%")
+      )
+    ) 
+  ),
+  fluidRow(
+    column(12,
+       wellPanel(
+         plotOutput('contents', width="100%", height = "600")
+       )
+    )
   )
   
     ))
